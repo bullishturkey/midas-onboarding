@@ -3,166 +3,310 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Midas Performance</title>
-<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Midas — 2026 Performance</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { background: #313338; font-family: 'Outfit', sans-serif; }
-  .embed {
-    background: #2b2d31;
-    border-left: 5px solid #D4AF37;
-    padding: 18px 22px 22px;
+
+  body {
+    background: #1a1a2e;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    font-family: 'Outfit', sans-serif;
+  }
+
+  .card {
+    background: #1e1f22;
+    border-radius: 12px;
+    padding: 22px 20px;
+    max-width: 460px;
     width: 100%;
-    position: relative;
-    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.6);
   }
-  .embed::before {
-    content: '';
-    position: absolute;
-    top: 0; right: 0;
-    width: 160px; height: 160px;
-    background: radial-gradient(circle at top right, rgba(212,175,55,0.07), transparent 70%);
-    pointer-events: none;
-  }
-  .embed-title {
-    font-family: 'IM Fell English', serif;
-    font-size: 20px;
-    color: #D4AF37;
+
+  /* Title */
+  .title {
+    font-size: 16px;
+    font-weight: 700;
+    color: #e3e5e8;
     margin-bottom: 4px;
+    line-height: 1.3;
   }
-  .embed-subtitle { font-size: 13px; color: #949ba4; margin-bottom: 16px; }
-  .divider { height: 1px; background: linear-gradient(90deg, rgba(212,175,55,0.35), transparent); margin: 14px 0; }
-  .rule-row { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .title span { margin-right: 6px; }
+
+  .subtitle {
+    font-size: 11px;
+    color: #949ba4;
+    margin-bottom: 14px;
+  }
+
+  /* Pills */
+  .pills {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
   .pill {
-    background: rgba(212,175,55,0.12);
-    border: 1px solid rgba(212,175,55,0.3);
+    border: 1px solid #3a3b3e;
     border-radius: 20px;
-    padding: 5px 14px;
-    font-size: 13px;
-    color: #D4AF37;
+    padding: 4px 12px;
+    font-size: 11px;
     font-weight: 500;
+    color: #b5bac1;
   }
-  .months-header {
-    display: grid;
-    grid-template-columns: 90px 1fr 1fr;
-    gap: 4px;
-    margin-bottom: 6px;
-  }
-  .months-header span {
-    font-size: 12px;
+
+  /* Table */
+  .table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+
+  .table thead th {
+    font-size: 10px;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.8px;
-    color: #949ba4;
+    letter-spacing: 0.6px;
+    padding-bottom: 8px;
     text-align: right;
   }
-  .months-header span:first-child { text-align: left; }
-  .month-row {
+  .table thead th:first-child { text-align: left; color: transparent; }
+  .col-2k { color: #4ade80; }
+  .col-5k { color: #60a5fa; }
+
+  .table tbody tr {
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  .table tbody td {
+    padding: 9px 0;
+    vertical-align: middle;
+  }
+
+  .month-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: #e3e5e8;
+  }
+  .month-result {
+    font-size: 10px;
+    font-weight: 600;
+    margin-left: 5px;
+  }
+  .pos { color: #4ade80; }
+  .neg { color: #f87171; }
+
+  .cell {
+    text-align: right;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.5;
+  }
+  .cell .balance {
+    display: block;
+    font-size: 11px;
+    font-weight: 400;
+    color: #949ba4;
+  }
+  .cell .contract-badge {
+    font-size: 9px;
+    color: #D4AF37;
+    font-weight: 700;
+    margin-left: 3px;
+  }
+
+  .special-note {
+    font-size: 10px;
+    color: #949ba4;
+    font-style: italic;
+    padding: 4px 0 6px;
+    border-top: none;
+  }
+  .special-note td { padding-top: 0; padding-bottom: 8px; }
+
+  /* Summary cards */
+  .summary-grid {
     display: grid;
-    grid-template-columns: 90px 1fr 1fr;
-    gap: 4px;
-    padding: 7px 0;
-    border-bottom: 1px solid rgba(255,255,255,0.05);
-    align-items: center;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 10px;
   }
-  .month-row:last-child { border-bottom: none; }
-  .month-label { font-size: 14px; color: #b5bac1; font-weight: 500; }
-  .month-result { font-size: 13px; text-align: right; line-height: 1.5; }
-  .result-neg { color: #f87171; }
-  .result-pos { color: #4ade80; }
-  .balance { font-size: 12px; color: #949ba4; }
-  .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 16px; }
+
   .summary-card {
-    background: #1e1f22;
+    background: #2b2d31;
     border-radius: 8px;
     padding: 12px 14px;
-    border-top: 2px solid transparent;
+    border: 1px solid #3a3b3e;
   }
-  .summary-card.green { border-top-color: #4ade80; }
-  .summary-card.blue { border-top-color: #60a5fa; }
-  .summary-start { font-size: 11px; color: #949ba4; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px; font-weight: 600; }
-  .summary-balance { font-size: 24px; font-weight: 700; color: #e3e5e8; margin-bottom: 3px; }
-  .summary-growth { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
-  .summary-growth.green { color: #4ade80; }
-  .summary-growth.blue { color: #60a5fa; }
-  .summary-meta { font-size: 12px; color: #949ba4; line-height: 1.6; }
+
+  .summary-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .label-2k { color: #4ade80; }
+  .label-5k { color: #60a5fa; }
+
+  .summary-balance {
+    font-size: 26px;
+    font-weight: 700;
+    color: #e3e5e8;
+    margin-bottom: 2px;
+  }
+
+  .summary-growth {
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+
+  .summary-meta {
+    font-size: 11px;
+    color: #949ba4;
+    line-height: 1.6;
+  }
+
+  /* Potential box */
   .potential-box {
-    background: rgba(212,175,55,0.07);
-    border: 1px solid rgba(212,175,55,0.22);
+    background: #2b2d31;
     border-radius: 8px;
     padding: 12px 14px;
-    margin-top: 12px;
+    border: 1px solid #3a3b3e;
+    margin-bottom: 14px;
   }
-  .potential-title { font-size: 13px; font-weight: 700; color: #D4AF37; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
-  .potential-row { display: flex; justify-content: space-between; font-size: 13px; color: #b5bac1; margin-bottom: 3px; }
-  .potential-row span:last-child { color: #4ade80; font-weight: 600; }
-  .footer-text { margin-top: 16px; font-size: 13px; color: #949ba4; font-style: italic; text-align: center; }
-  .everyone-tag { color: #c9cdfb; background: rgba(88,101,242,0.2); padding: 1px 5px; border-radius: 3px; font-style: normal; font-weight: 500; }
+
+  .potential-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: #e3e5e8;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+  }
+
+  .potential-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #949ba4;
+    margin-bottom: 4px;
+  }
+  .potential-row span:last-child {
+    color: #4ade80;
+    font-weight: 600;
+  }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    font-size: 11px;
+    color: #949ba4;
+    font-style: italic;
+    line-height: 1.7;
+  }
+  .everyone {
+    color: #c9cdfb;
+    font-style: normal;
+    font-weight: 500;
+  }
 </style>
 </head>
 <body>
-<div class="embed">
-  <div class="embed-title">📊 2026 Performance Update — NDX Vertical Spread Model</div>
-  <div class="embed-subtitle">Through May 27 · 3 trades remaining this month</div>
-  <div class="rule-row">
+<div class="card">
+
+  <div class="title"><span>📊</span>2026 Performance Update — NDX Vertical Spread Model</div>
+  <div class="subtitle">Through May 29 &nbsp;·&nbsp; Month closed</div>
+
+  <div class="pills">
     <span class="pill">$500 / contract</span>
     <span class="pill">+1 contract per $5K after $7K</span>
   </div>
-  <div class="divider"></div>
-  <div class="months-header">
-    <span></span>
-    <span style="color:#4ade80;">$2K START</span>
-    <span style="color:#60a5fa;">$5K START</span>
-  </div>
-  <div class="month-row">
-    <span class="month-label">Jan <span style="color:#4ade80;font-size:11px;">(+3)</span></span>
-    <div class="month-result result-pos" style="text-align:right;">+$1,500<br><span class="balance">→ $3,500</span></div>
-    <div class="month-result result-pos" style="text-align:right;">+$3,000<br><span class="balance">→ $8,000</span></div>
-  </div>
-  <div class="month-row">
-    <span class="month-label">Feb <span style="color:#4ade80;font-size:11px;">(+4)</span></span>
-    <div class="month-result result-pos" style="text-align:right;">+$2,000<br><span class="balance">→ $5,500</span></div>
-    <div class="month-result result-pos" style="text-align:right;">+$4,000<br><span class="balance">→ $12,000</span></div>
-  </div>
-  <div class="month-row">
-    <span class="month-label">Mar <span style="color:#f87171;font-size:11px;">(-2)</span></span>
-    <div class="month-result result-neg" style="text-align:right;">-$1,000<br><span class="balance">→ $4,500</span></div>
-    <div class="month-result result-neg" style="text-align:right;">-$2,000<br><span class="balance">→ $10,000</span></div>
-  </div>
-  <div class="month-row">
-    <span class="month-label">Apr <span style="color:#4ade80;font-size:11px;">(+5)</span></span>
-    <div class="month-result result-pos" style="text-align:right;">+$2,500<br><span class="balance">→ $7,000</span></div>
-    <div class="month-result result-pos" style="text-align:right;">+$5,000<br><span class="balance">→ $15,000</span></div>
-  </div>
-  <div class="month-row">
-    <span class="month-label">May* <span style="color:#4ade80;font-size:11px;">(+3)</span></span>
-    <div class="month-result result-pos" style="text-align:right;">+$3,000<br><span class="balance">→ $10,000 <span style="color:#D4AF37;font-size:10px;">2x</span></span></div>
-    <div class="month-result result-pos" style="text-align:right;">+$4,500<br><span class="balance">→ $19,500 <span style="color:#D4AF37;font-size:10px;">3x</span></span></div>
-  </div>
-  <div class="divider"></div>
+
+  <!-- Table -->
+  <table class="table">
+    <thead>
+      <tr>
+        <th></th>
+        <th class="col-2k">$2K START</th>
+        <th class="col-5k">$5K START</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Jan -->
+      <tr>
+        <td><span class="month-label">Jan</span><span class="month-result pos">(+3)</span></td>
+        <td class="cell pos">+$1,500<span class="balance">→ $3,500</span></td>
+        <td class="cell pos">+$3,000<span class="balance">→ $8,000</span></td>
+      </tr>
+      <!-- Feb -->
+      <tr>
+        <td><span class="month-label">Feb</span><span class="month-result pos">(+4)</span></td>
+        <td class="cell pos">+$2,000<span class="balance">→ $5,500</span></td>
+        <td class="cell pos">+$4,000<span class="balance">→ $12,000</span></td>
+      </tr>
+      <!-- Mar -->
+      <tr>
+        <td><span class="month-label">Mar</span><span class="month-result neg">(-2)</span></td>
+        <td class="cell neg">-$1,000<span class="balance">→ $4,500</span></td>
+        <td class="cell neg">-$2,000<span class="balance">→ $10,000</span></td>
+      </tr>
+      <!-- Apr -->
+      <tr>
+        <td><span class="month-label">Apr</span><span class="month-result pos">(+5)</span></td>
+        <td class="cell pos">+$2,500<span class="balance">→ $7,000</span></td>
+        <td class="cell pos">+$5,000<span class="balance">→ $15,000</span></td>
+      </tr>
+      <!-- May -->
+      <tr>
+        <td><span class="month-label">May*</span><span class="month-result pos">(+4)</span></td>
+        <td class="cell pos">+$3,892<span class="balance">→ $10,892<span class="contract-badge">2x</span></span></td>
+        <td class="cell pos">+$5,892<span class="balance">→ $20,892<span class="contract-badge">3x</span></span></td>
+      </tr>
+      <!-- Special note row -->
+      <tr class="special-note">
+        <td colspan="3" style="font-size:10px;color:#949ba4;font-style:italic;padding-top:2px;padding-bottom:10px;">
+          *Special trades: +$200 / -$111 / -$197 (net -$108)
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Summary cards -->
   <div class="summary-grid">
-    <div class="summary-card green">
-      <div class="summary-start">$2K Start</div>
-      <div class="summary-balance">$10,000</div>
-      <div class="summary-growth green">+$8,000 · +400%</div>
+    <div class="summary-card">
+      <div class="summary-label label-2k">$2K Start</div>
+      <div class="summary-balance">$10,892</div>
+      <div class="summary-growth pos">+$8,892 · +445%</div>
       <div class="summary-meta">2 contracts active<br>Next bump → $15K</div>
     </div>
-    <div class="summary-card blue">
-      <div class="summary-start">$5K Start</div>
-      <div class="summary-balance">$19,500</div>
-      <div class="summary-growth blue">+$14,500 · +290%</div>
-      <div class="summary-meta">3 contracts active<br>Next bump → $20K</div>
+    <div class="summary-card">
+      <div class="summary-label label-5k">$5K Start</div>
+      <div class="summary-balance">$20,892</div>
+      <div class="summary-growth" style="color:#60a5fa;">+$15,892 · +318%</div>
+      <div class="summary-meta">3 contracts active<br>Next bump → $25K</div>
     </div>
   </div>
+
+  <!-- Potential box -->
   <div class="potential-box">
-    <div class="potential-title">⏳ 3 Trades Left in May — Full Close Potential</div>
-    <div class="potential-row"><span>$2K path (2 contracts)</span><span>→ $13,000</span></div>
-    <div class="potential-row"><span>$5K path (3 contracts)</span><span>→ $24,000</span></div>
+    <div class="potential-title">🏁 Final May Results</div>
+    <div class="potential-row">
+      <span>$2K path (2 contracts)</span>
+      <span>→ $10,892</span>
+    </div>
+    <div class="potential-row">
+      <span>$5K path (3 contracts)</span>
+      <span>→ $20,892</span>
+    </div>
   </div>
-  <div class="footer-text">
-    One losing month all year. Everything else has been execution. Stay locked in. 🎯<br>
-    <span class="everyone-tag">@everyone</span>
+
+  <div class="footer">
+    One losing month all year. Everything else has been execution. See you in June. 🎯<br>
+    <span class="everyone">@everyone</span>
   </div>
+
 </div>
 </body>
 </html>
